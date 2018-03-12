@@ -1,0 +1,64 @@
+$prefix:'home-page';
+$types-height:50px;
+.#{$prefix} {
+    // display: flex;
+    width: 100%;
+    .types-container {
+        // display: flex;
+        height: $types-height;
+        line-height: $types-height;
+        background-color: #fff;
+        // justify-content: center;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+        border-top: 1px solid #f1f1f1;
+        .types-list {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            
+            .types-item__actived{
+                color: #007fff
+            }
+            .types-item {
+                padding: 0 10px;
+            }
+        }
+    }
+    .home-container {
+        display: flex;
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+        margin-top: 24px;
+        .left-container,
+        .right-container {}
+        .left-container {
+            flex: 1 1 auto;
+            min-height: 400px;
+            background: #fff; // padding: 10px 15px;        
+            .order-list {
+                display: flex;
+                flex: 1 1 auto;
+                border-bottom: 1px solid #f6f6f6;
+                padding: 10px 15px;
+                .order-item {
+                    padding: 0 10px;
+                    font-size: 16px;
+                }
+                .tags {
+                    display: flex;
+                    flex: 1 1 auto;
+                    justify-content: flex-end
+                }
+                .tags-item {
+                    font-size: 14px;
+                    padding: 0 10px
+                }
+            }
+        }
+        .right-container {
+            margin-left: 20px;
+            width: 240px;
+        }
+    }
+}
