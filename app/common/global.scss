@@ -1,9 +1,20 @@
-#root,.cus-sider{
+#root,
+.cus-sider {
     height: 100%;
 }
-.main-container{
+
+.main-container {
     // max-width: 960px;
     width: 100%;
     display: flex;
     margin: 0 auto
+}
+
+.clearfix::after {
+    content: '';
+    height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+    zoom: 1;
 }

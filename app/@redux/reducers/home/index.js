@@ -1,23 +1,17 @@
-import { fromJS } from 'immutable'
-
-import {CHANGE_USERNAME, SEARCH_USERS_REPO, GITHUB_REPO_LOADED, GITHUB_REPO_ERROR} from '@redux/constants/home'
+import { fromJS,List } from 'immutable';
+import { GET_TOPIC_LIST, GET_TOPIC_LIST_SUCCESS } from '../../constants/home/index';
 
 const initialState = fromJS({
-  name: 'godotdotdot',
-  repoData: null,
+  topic_lists:[],
   loading: false,
   error: false
 })
 function homeReducer (state = initialState, action) {
   switch (action.type) {
-    case CHANGE_USERNAME:
-      return state.set('name', action.name)
-    case SEARCH_USERS_REPO:
-      return state.set('loading', true).set('error', false)
-    case GITHUB_REPO_ERROR:
-      return state.set('loading', false).set('error', true)
-    case GITHUB_REPO_LOADED:
-      return state.set('repoData', action.repoData).set('loading', false).set('error', false)
+    case GET_TOPIC_LIST:
+      return state
+    case GET_TOPIC_LIST_SUCCESS:
+      return state.set('topic_lists',List(action.payload.data))
     default:
       return state
   }

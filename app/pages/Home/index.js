@@ -9,9 +9,7 @@ import { searchUsersGithubRepo, changeUsername } from "@redux/actions/home";
 import homeReducer from "@redux/reducers/home";
 import saga from "@redux/sagas/home";
 import {
-  makeSelectUsername,
-  makeSelectRepos,
-  makeSelectLoading,
+  makeSelectTopicLists,
   makeSelectError
 } from "@redux/selectors/home";
 import injectReducer from "utils/injectReducer";
@@ -22,19 +20,32 @@ import "./styles/index.scss";
 import { TYPES } from "common/nav";
 import { Link, NavLink } from "react-router-dom";
 
+
+// Components
+import TopicListItem from '../../components/TopicListItem'
+import { getTopicLists } from "../../@redux/actions/home/index";
+
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 class HomePage extends Component {
-  onSearchClickHandle = () => {
-    const { dispatch, name } = this.props;
-    dispatch && dispatch(searchUsersGithubRepo(name));
-  };
-  onInputChangeHandle = e => {
-    const { value } = e.target;
-    const { dispatch } = this.props;
-    dispatch && dispatch(changeUsername(value));
-  };
+  // onSearchClickHandle = () => {
+  //   const { dispatch, name } = this.props;
+  //   dispatch && dispatch(searchUsersGithubRepo(name));
+  // };
+  // onInputChangeHandle = e => {
+  //   const { value } = e.target;
+  //   const { dispatch } = this.props;
+  //   dispatch && dispatch(changeUsername(value));
+  // };
+
+  componentDidMount(){
+    const {dispatch} = this.props
+    if(dispatch){
+      dispatch(getTopicLists(1))
+    }
+  }
+
   render() {
-    const { name, repoData, loading, error } = this.props;
+    const { topic_lists, error } = this.props;
     const { id } = this.props.match.params;
     console.log(this.props.match);
     return (
@@ -58,10 +69,16 @@ class HomePage extends Component {
               <span className="order-item">热门</span>
               <span className="order-item">最新</span>
             </div>
+            <div className='topicList-container'>
+            {
+              topic_lists.length > 0 ? topic_lists.map((ele,index) =><TopicListItem key={index} {...ele}></TopicListItem>) : null
+            }
             首页{this.props.match.params.id}
             {
               // this.props.match.params.type||'获取不到'
             }
+            </div>
+           
           </div>
           <div className="right-container">Aside area</div>
         </div>
@@ -71,9 +88,7 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  name: makeSelectUsername(),
-  repoData: makeSelectRepos(),
-  loading: makeSelectLoading(),
+  topic_lists: makeSelectTopicLists(),
   error: makeSelectError()
 });
 
