@@ -1,27 +1,19 @@
-import {CHANGE_USERNAME, SEARCH_USERS_REPO, GITHUB_REPO_LOADED, GITHUB_REPO_ERROR} from '@redux/constants/home'
+import { GET_TOPIC_LIST, GET_TOPIC_LIST_SUCCESS } from "../../constants/home/index";
 
-export function changeUsername (name) {
-  console.log('action:', name)
+
+export function getTopicLists(page){
   return {
-    type: CHANGE_USERNAME,
-    name
+    type: GET_TOPIC_LIST,
+    payload:{
+      page
+    }
   }
 }
-export function searchUsersGithubRepo (name) {
+export function getTopicListsSuccess(data){
   return {
-    type: SEARCH_USERS_REPO,
-    name
-  }
-}
-export function githubRepoLoaded (repoData) {
-  return {
-    type: GITHUB_REPO_LOADED,
-    repoData
-  }
-}
-export function githubRepoError (errMsg) {
-  return {
-    type: GITHUB_REPO_ERROR,
-    errMsg
+    type: GET_TOPIC_LIST_SUCCESS,
+    payload:{
+      data
+    }
   }
 }

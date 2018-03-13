@@ -17,7 +17,7 @@ const loadComponent = (Component, Loading = DefaultLoading) => () => (
 const NAV__LOGIN = [
   {
     title: '首页',
-    route: '/index',
+    route: '/',
     component: loadComponent(HomePage),
     exact: true,
     // hidden:true

@@ -1,8 +1,9 @@
 import {takeLatest, put} from 'redux-saga/effects'
-import {SEARCH_USERS_REPO} from '@redux/constants/home'
-import {githubRepoLoaded, githubRepoError} from '@redux/actions/home'
 import request from 'utils/request'
+import {ctx} from '../../../common/global'
 import {message} from 'antd'
+import { getTopicListsSuccess } from '../../actions/home/index';
+import { GET_TOPIC_LIST } from '../../constants/home/index';
 function parseRepoDataToList (data) {
   // return Array.prototype.map.call(data, (ele) => ele.full_name)
   return data
@@ -18,6 +19,15 @@ function * getGithubReps (action) {
   }
 }
 
+function * sagaGetTopicLists(action){
+  try{
+    const data = yield request(`${ctx}/TopicLists?page=${action.payload.page}`)
+    yield put(getTopicListsSuccess(data.data))
+  }catch(err){
+    message.error(err.message)    
+  }
+}
+
 export default function * homeSaga () {
-  yield takeLatest(SEARCH_USERS_REPO, getGithubReps)
+  yield takeLatest(GET_TOPIC_LIST, sagaGetTopicLists)
 }
