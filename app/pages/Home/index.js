@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {is} from 'immutable';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -8,10 +9,7 @@ import { createStructuredSelector } from "reselect";
 import { searchUsersGithubRepo, changeUsername } from "@redux/actions/home";
 import homeReducer from "@redux/reducers/home";
 import saga from "@redux/sagas/home";
-import {
-  makeSelectTopicLists,
-  makeSelectError
-} from "@redux/selectors/home";
+import { makeSelectTopicLists, makeSelectError } from "@redux/selectors/home";
 import injectReducer from "utils/injectReducer";
 import injectSaga from "utils/injectSaga";
 import { Input, Button, List, Spin, Icon } from "antd";
@@ -20,9 +18,8 @@ import "./styles/index.scss";
 import { TYPES } from "common/nav";
 import { Link, NavLink } from "react-router-dom";
 
-
 // Components
-import TopicListItem from '../../components/TopicListItem'
+import TopicListItem from "../../components/TopicListItem";
 import { getTopicLists } from "../../@redux/actions/home/index";
 
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -36,18 +33,52 @@ class HomePage extends Component {
   //   const { dispatch } = this.props;
   //   dispatch && dispatch(changeUsername(value));
   // };
+  componentDidUpdate() {
+    console.log("did update");
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    const thisProps = this.props || {};
+    const thisState = this.state || {};
+    nextState = nextState || {};
+    nextProps = nextProps || {};
 
-  componentDidMount(){
-    const {dispatch} = this.props
-    if(dispatch){
-      dispatch(getTopicLists(1))
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
+        Object.keys(thisState).length !== Object.keys(nextState).length) {
+        return true;
+    }
+
+    for (const key in nextProps) {
+        if (!is(thisProps[key], nextProps[key])) {
+            return true;
+        }
+    }
+
+    for (const key in nextState) {
+        if (!is(thisState[key], nextState[key])) {
+            return true;
+        }
+    }
+    return false;
+  }
+  componentDidMount() {
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch(getTopicLists(1));
     }
   }
-
+  componentWillReceiveProps(nextProps) {
+    const _id = this.props.match.params.id;
+    const { id } = nextProps.match.params;
+    if (_id !== id) {
+      const { dispatch } = this.props;
+      if (dispatch) {
+        dispatch(getTopicLists(id));
+      }
+    }
+  }
   render() {
     const { topic_lists, error } = this.props;
     const { id } = this.props.match.params;
-    console.log(this.props.match);
     return (
       <div className="home-page">
         <div className="types-container">
@@ -69,16 +100,17 @@ class HomePage extends Component {
               <span className="order-item">热门</span>
               <span className="order-item">最新</span>
             </div>
-            <div className='topicList-container'>
-            {
-              topic_lists.length > 0 ? topic_lists.map((ele,index) =><TopicListItem key={index} {...ele}></TopicListItem>) : null
-            }
-            首页{this.props.match.params.id}
-            {
-              // this.props.match.params.type||'获取不到'
-            }
+            <div className="topicList-container">
+              {topic_lists.length > 0
+                ? topic_lists.map((ele, index) => (
+                    <TopicListItem key={index} {...ele} />
+                  ))
+                : null}
+              首页{this.props.match.params.id}
+              {
+                // this.props.match.params.type||'获取不到'
+              }
             </div>
-           
           </div>
           <div className="right-container">Aside area</div>
         </div>
