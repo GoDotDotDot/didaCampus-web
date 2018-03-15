@@ -79,6 +79,7 @@ class HomePage extends Component {
   render() {
     const { topic_lists, error } = this.props;
     const { id } = this.props.match.params;
+    const toJS_topic_lists = topic_lists.toJS()
     return (
       <div className="home-page">
         <div className="types-container">
@@ -101,8 +102,8 @@ class HomePage extends Component {
               <span className="order-item">最新</span>
             </div>
             <div className="topicList-container">
-              {topic_lists.length > 0
-                ? topic_lists.map((ele, index) => (
+              {toJS_topic_lists.length > 0
+                ? toJS_topic_lists.map((ele, index) => (
                     <TopicListItem key={index} {...ele} />
                   ))
                 : null}
