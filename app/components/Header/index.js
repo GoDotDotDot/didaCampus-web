@@ -16,6 +16,10 @@ const isParam = (match, location) => {
 }
 
 class Header extends React.Component {
+  showLoginModal=()=>{
+    const {signInModalVisible} = this.props
+    signInModalVisible && signInModalVisible(true)
+  }
   render() {
     const menu = (
         <Menu>
@@ -73,7 +77,7 @@ class Header extends React.Component {
                 </Dropdown>
               </li>
               <li className="nav-item nav-user" style={{ marginLeft: 20 }}>
-                <span className="login">登录</span>
+                <span className="login" onClick={this.showLoginModal}>登录</span>
                 <span className="register">注册</span>
               </li>
             </ul>

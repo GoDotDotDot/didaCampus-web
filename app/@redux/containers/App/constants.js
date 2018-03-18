@@ -13,3 +13,12 @@ export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
 export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
 export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
 export const DEFAULT_LOCALE = 'en';
+// USER AUTH
+export const SHOW_SIGN_IN_MODAL = 'SHOW_SIGN_IN_MODAL'
+export const HIDE_SIGN_IN_MODAL = 'HIDE_SIGN_IN_MODAL'
+export const SIGN_IN = 'SIGN_IN'
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
+export const SIGN_IN_ERROR = 'SIGN_IN_ERROR'
+export const SIGN_OUT = 'SIGN_OUT'
+export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
+export const SIGN_OUT_ERROR = 'SIGN_OUT_ERROR'

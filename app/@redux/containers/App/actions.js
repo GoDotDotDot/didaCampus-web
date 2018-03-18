@@ -19,6 +19,8 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
+  SHOW_SIGN_IN_MODAL,
+  HIDE_SIGN_IN_MODAL,
 } from './constants';
 
 /**
@@ -49,15 +51,18 @@ export function reposLoaded(repos, username) {
 }
 
 /**
- * Dispatched when loading the repositories fails
- *
- * @param  {object} error The error
- *
- * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
+ * @description 展示登录模态框
  */
-export function repoLoadingError(error) {
+export function showSignInModal(){
   return {
-    type: LOAD_REPOS_ERROR,
-    error,
-  };
+    type:SHOW_SIGN_IN_MODAL
+  }
+}
+/**
+ * @desc 隐藏登录模态框
+ */
+export function hideSignInModal(){
+  return {
+    type:HIDE_SIGN_IN_MODAL
+  }
 }
