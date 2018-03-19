@@ -9,7 +9,11 @@
     display: flex;
     margin: 0 auto
 }
-
+.signIn-welcom{
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
 .clearfix::after {
     content: '';
     height: 0;

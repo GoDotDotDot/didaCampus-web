@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import {is} from 'immutable';
+import BaseComponent from '../../components/HOCImutable'
+import { is } from "immutable";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -13,7 +14,7 @@ import { makeSelectTopicLists, makeSelectError } from "@redux/selectors/home";
 import injectReducer from "utils/injectReducer";
 import injectSaga from "utils/injectSaga";
 import { Input, Button, List, Spin, Icon } from "antd";
-
+import pathToRegexp from 'path-to-regexp'
 import "./styles/index.scss";
 import { TYPES } from "common/nav";
 import { Link, NavLink } from "react-router-dom";
@@ -21,45 +22,17 @@ import { Link, NavLink } from "react-router-dom";
 // Components
 import TopicListItem from "../../components/TopicListItem";
 import { getTopicLists } from "../../@redux/actions/home/index";
-
+import toJS from '../../components/ToJS'
+import { makeSelectRoute } from "../../@redux/selectors/home";
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-class HomePage extends Component {
-  // onSearchClickHandle = () => {
-  //   const { dispatch, name } = this.props;
-  //   dispatch && dispatch(searchUsersGithubRepo(name));
-  // };
-  // onInputChangeHandle = e => {
-  //   const { value } = e.target;
-  //   const { dispatch } = this.props;
-  //   dispatch && dispatch(changeUsername(value));
-  // };
+const reg = pathToRegexp('/index/:id')
+
+class HomePage extends BaseComponent {
+
   componentDidUpdate() {
-    console.log("did update");
+    console.log("home did update");
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    const thisProps = this.props || {};
-    const thisState = this.state || {};
-    nextState = nextState || {};
-    nextProps = nextProps || {};
-
-    if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
-        Object.keys(thisState).length !== Object.keys(nextState).length) {
-        return true;
-    }
-
-    for (const key in nextProps) {
-        if (!is(thisProps[key], nextProps[key])) {
-            return true;
-        }
-    }
-
-    for (const key in nextState) {
-        if (!is(thisState[key], nextState[key])) {
-            return true;
-        }
-    }
-    return false;
-  }
+ 
   componentDidMount() {
     const { dispatch } = this.props;
     if (dispatch) {
@@ -67,8 +40,10 @@ class HomePage extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const _id = this.props.match.params.id;
-    const { id } = nextProps.match.params;
+    const _pathname = this.props.location.toJS().pathname;
+    const pathname = nextProps.location.toJS().pathname;
+    const _id = this.getParams(_pathname)
+    const id = this.getParams(_pathname)
     if (_id !== id) {
       const { dispatch } = this.props;
       if (dispatch) {
@@ -76,10 +51,25 @@ class HomePage extends Component {
       }
     }
   }
+  getParams = (pathname)=>{
+    const params = reg.exec(pathname)
+    let id
+    if(params){
+        if(params.length>1){
+          id = params[1]
+        }else{
+          id='all'
+        }
+    }else{
+      id = 'all'
+    }
+    return id
+  }
   render() {
-    const { topic_lists, error } = this.props;
-    const { id } = this.props.match.params;
-    const toJS_topic_lists = topic_lists.toJS()
+    const { topic_lists, error,location } = toJS(this.props);
+    // const { id } = this.props.match.params;
+    // console.log(this.props)
+    const id = this.getParams(location.pathname)
     return (
       <div className="home-page">
         <div className="types-container">
@@ -98,16 +88,24 @@ class HomePage extends Component {
         <div className="home-container">
           <div className="left-container">
             <div className="order-list">
-              <span className="order-item">热门</span>
-              <span className="order-item">最新</span>
+              <Link className="order-item" to="?order=hot">
+                热门
+              </Link>
+              <Link className="order-item" to="?order=latest">
+                最新
+              </Link>
             </div>
             <div className="topicList-container">
-              {toJS_topic_lists.length > 0
-                ? toJS_topic_lists.map((ele, index) => (
+              {topic_lists.length > 0
+                ? topic_lists.map((ele, index) => (
                     <TopicListItem key={index} {...ele} />
                   ))
                 : null}
-              首页{this.props.match.params.id}
+              首页
+              {/* {this.props.match.params.id} */}
+              <Link className="order-item" to="?page=2">
+                分页
+              </Link>
               {
                 // this.props.match.params.type||'获取不到'
               }
@@ -122,13 +120,12 @@ class HomePage extends Component {
 
 const mapStateToProps = createStructuredSelector({
   topic_lists: makeSelectTopicLists(),
-  error: makeSelectError()
+  error: makeSelectError(),
+  location:makeSelectRoute()
 });
 
 const withConnect = connect(mapStateToProps);
 const withReducer = injectReducer({ key: "home", reducer: homeReducer });
 const withSaga = injectSaga({ key: "home", saga });
 
-export default compose(withRouter, withReducer, withSaga, withConnect)(
-  HomePage
-);
+export default compose(withReducer, withSaga, withConnect)(HomePage);

@@ -11,7 +11,7 @@ function homeReducer (state = initialState, action) {
     case GET_TOPIC_LIST:
       return state
     case GET_TOPIC_LIST_SUCCESS:
-      return state.set('topic_lists',List(action.payload.data))
+      return state.set('topic_lists',fromJS(action.payload.data))
     default:
       return state
   }

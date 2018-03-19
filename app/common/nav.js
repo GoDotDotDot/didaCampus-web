@@ -32,8 +32,8 @@ const NAV__LOGIN = [
   {
     title: '热门',
     route: '/hot',
-    component: loadComponent(HotPage)
-
+    component: loadComponent(HotPage),
+    exact:true
     // child: [
     //   {
     //     title: 'Sub1',

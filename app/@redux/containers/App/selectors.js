@@ -12,32 +12,17 @@ const makeSelectCurrentUser = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('currentUser')
 );
-
-const makeSelectLoading = () => createSelector(
+const makeSelectSignInModal = ()=>createSelector(
   selectGlobal,
-  (globalState) => globalState.get('loading')
-);
-
-const makeSelectError = () => createSelector(
-  selectGlobal,
-  (globalState) => globalState.get('error')
-);
-
-const makeSelectRepos = () => createSelector(
-  selectGlobal,
-  (globalState) => globalState.getIn(['userData', 'repositories'])
-);
-
-const makeSelectLocation = () => createSelector(
+  globalState=>globalState.get('signInModalVisible')
+)
+const makeSelectRoute = ()=>createSelector(
   selectRoute,
-  (routeState) => routeState.get('location').toJS()
-);
+  routeState=>routeState.get('location')
+)
 
 export {
   selectGlobal,
-  makeSelectCurrentUser,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectRepos,
-  makeSelectLocation,
+  makeSelectRoute,
+  makeSelectSignInModal,
 };
