@@ -14,7 +14,7 @@ import { makeSelectTopicLists, makeSelectError } from "@redux/selectors/home";
 import injectReducer from "utils/injectReducer";
 import injectSaga from "utils/injectSaga";
 import { Input, Button, List, Spin, Icon } from "antd";
-
+import pathToRegexp from 'path-to-regexp'
 import "./styles/index.scss";
 import { TYPES } from "common/nav";
 import { Link, NavLink } from "react-router-dom";
@@ -23,19 +23,14 @@ import { Link, NavLink } from "react-router-dom";
 import TopicListItem from "../../components/TopicListItem";
 import { getTopicLists } from "../../@redux/actions/home/index";
 import toJS from '../../components/ToJS'
+import { makeSelectRoute } from "../../@redux/selectors/home";
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const reg = pathToRegexp('/index/:id')
+
 class HomePage extends BaseComponent {
-  // onSearchClickHandle = () => {
-  //   const { dispatch, name } = this.props;
-  //   dispatch && dispatch(searchUsersGithubRepo(name));
-  // };
-  // onInputChangeHandle = e => {
-  //   const { value } = e.target;
-  //   const { dispatch } = this.props;
-  //   dispatch && dispatch(changeUsername(value));
-  // };
+
   componentDidUpdate() {
-    console.log("did update");
+    console.log("home did update");
   }
  
   componentDidMount() {
@@ -45,8 +40,10 @@ class HomePage extends BaseComponent {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const _id = this.props.match.params.id;
-    const { id } = nextProps.match.params;
+    const _pathname = this.props.location.toJS().pathname;
+    const pathname = nextProps.location.toJS().pathname;
+    const _id = this.getParams(_pathname)
+    const id = this.getParams(_pathname)
     if (_id !== id) {
       const { dispatch } = this.props;
       if (dispatch) {
@@ -54,10 +51,25 @@ class HomePage extends BaseComponent {
       }
     }
   }
+  getParams = (pathname)=>{
+    const params = reg.exec(pathname)
+    let id
+    if(params){
+        if(params.length>1){
+          id = params[1]
+        }else{
+          id='all'
+        }
+    }else{
+      id = 'all'
+    }
+    return id
+  }
   render() {
-    const { topic_lists, error } = this.props;
-    const { id } = this.props.match.params;
-    console.log(this.props)
+    const { topic_lists, error,location } = toJS(this.props);
+    // const { id } = this.props.match.params;
+    // console.log(this.props)
+    const id = this.getParams(location.pathname)
     return (
       <div className="home-page">
         <div className="types-container">
@@ -89,7 +101,8 @@ class HomePage extends BaseComponent {
                     <TopicListItem key={index} {...ele} />
                   ))
                 : null}
-              首页{this.props.match.params.id}
+              首页
+              {/* {this.props.match.params.id} */}
               <Link className="order-item" to="?page=2">
                 分页
               </Link>
@@ -107,13 +120,12 @@ class HomePage extends BaseComponent {
 
 const mapStateToProps = createStructuredSelector({
   topic_lists: makeSelectTopicLists(),
-  error: makeSelectError()
+  error: makeSelectError(),
+  location:makeSelectRoute()
 });
 
 const withConnect = connect(mapStateToProps);
 const withReducer = injectReducer({ key: "home", reducer: homeReducer });
 const withSaga = injectSaga({ key: "home", saga });
 
-export default compose(withRouter, withReducer, withSaga, withConnect)(
-  toJS(HomePage)
-);
+export default compose(withReducer, withSaga, withConnect)(HomePage);

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import toJS from "../app/components/ToJS";
+import BaseComponent from './components/HOCImutable'
 import { connect } from "react-redux";
 import { changeLocale } from "@redux/containers/LanguageProvider/actions";
 import { Layout, Menu, Icon, Select, Modal } from "antd";
@@ -23,6 +24,7 @@ import {
   hideSignInModal
 } from "./@redux/containers/App/actions";
 import { makeSelectSignInModal } from "./@redux/containers/App/selectors";
+import { makeSelectRoute } from "./@redux/selectors/home";
 
 const Option = Select.Option;
 
@@ -35,7 +37,7 @@ const getDefaultSelectedKeys = path => {
   const flatPath = path.split("/").filter(_ => _);
   return [flatPath.length > 0 ? path : "/"];
 };
-class AppLayout extends React.Component {
+class AppLayout extends BaseComponent {
   constructor(props) {
     super(props);
     this.hashChangeHandle = this.hashChangeHandle.bind(this);
@@ -112,14 +114,17 @@ class AppLayout extends React.Component {
     if (visible) dispatch(showSignInModal());
     else dispatch(hideSignInModal());
   };
+  componentDidUpdate(){
+    console.log('app.layout did update')
+  }
   render() {
     const { pathname, hash } = history.location;
     const noPrefixHash = hash.replace(/\#/, "");
-    const { signInModalVisible } = this.props;
+    const { signInModalVisible,location } = this.props;
     return (
       <Router history={history}>
         <Layout>
-          <Header signInModalVisible={this.signInModalVisible}>
+          <Header signInModalVisible={this.signInModalVisible} location={location}>
             {/* <Select
               value={this.props.locale}
               onChange={this.languageChangeHandle}
@@ -157,8 +162,9 @@ class AppLayout extends React.Component {
 // };
 
 const mapStateToProps = createStructuredSelector({
-  signInModalVisible: makeSelectSignInModal()
+  signInModalVisible: makeSelectSignInModal(),
+  location:makeSelectRoute()
   // error: makeSelectError()
 });
 // changeLocale
-export default withRouter(connect(mapStateToProps)(toJS(AppLayout)));
+export default withRouter(connect(mapStateToProps)(AppLayout));

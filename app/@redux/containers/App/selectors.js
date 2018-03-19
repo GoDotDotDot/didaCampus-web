@@ -16,9 +16,13 @@ const makeSelectSignInModal = ()=>createSelector(
   selectGlobal,
   globalState=>globalState.get('signInModalVisible')
 )
+const makeSelectRoute = ()=>createSelector(
+  selectRoute,
+  routeState=>routeState.get('location')
+)
 
 export {
   selectGlobal,
-  selectRoute,
+  makeSelectRoute,
   makeSelectSignInModal,
 };
