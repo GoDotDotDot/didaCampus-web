@@ -80,13 +80,16 @@ module.exports = (options) => ({
               }
             },
             {
-              loader: 'postcss-loader'
+              loader: 'postcss-loader',
+              options:{
+                // sourceMap: !options.isProd,                
+              }
             },
             {
               loader: 'sass-loader',
               options: {
                 // outputStyle: 'collapsed',
-                sourceMap: true,
+                sourceMap:  !options.isProd,
                 includePaths: ['app']
               }
             }
@@ -111,14 +114,17 @@ module.exports = (options) => ({
               }
             },
             {
-              loader: 'postcss-loader'
+              loader: 'postcss-loader',
+              options:{
+                // sourceMap: !options.isProd,                
+              }
             },
             {
               loader: 'less-loader',
               options: {
               // outputStyle: 'collapsed',
                 modifyVars: themeVariables,
-                sourceMap: true,
+                sourceMap:  !options.isProd,
                 includePaths: [path.resolve(workingPath, 'app')]
               }
             }

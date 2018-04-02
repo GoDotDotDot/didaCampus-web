@@ -4,6 +4,7 @@ import React from 'react'
 
 import HomePage from 'bundle-loader?lazy&name=Home!pages/Home'
 import HotPage from 'bundle-loader?lazy&name=Hot!pages/Hot'
+import PublishPage from 'bundle-loader?lazy&name=Publish!pages/Publish'
 
 import Bundle from '../components/Lazyload'
 const DefaultLoading = () => <div style={{height: '100px'}}>正在加载</div>
@@ -34,17 +35,13 @@ const NAV__LOGIN = [
     route: '/hot',
     component: loadComponent(HotPage),
     exact:true
-    // child: [
-    //   {
-    //     title: 'Sub1',
-    //     route: '/page1/sub1',
-    //     component: loadComponent(Sub1)
-    //   }, {
-    //     title: 'Sub2',
-    //     route: '/page1/sub2',
-    //     component: loadComponent(Sub2)
-    //   }
-    // ]
+  },
+  {
+    title: '发布',
+    route: '/publish',
+    component: loadComponent(PublishPage),
+    hidden: true ,//隐藏该导航  
+    exact:true
   }
 ]
 

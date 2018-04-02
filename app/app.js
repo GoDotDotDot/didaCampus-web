@@ -21,7 +21,7 @@ import history from './common/history'
 import App from './app.layout';
 
 // Import Language Provider
-import LanguageProvider from '@redux/containers/LanguageProvider';
+// import LanguageProvider from '@redux/containers/LanguageProvider';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -69,11 +69,11 @@ const MOUNT_NODE = document.getElementById('main');
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
+      {/* <LanguageProvider messages={messages}> */}
         <ConnectedRouter history={history}>
           <App/>
         </ConnectedRouter>
-      </LanguageProvider>
+      {/* </LanguageProvider> */}
     </Provider>,
     MOUNT_NODE
   );
