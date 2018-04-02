@@ -132,7 +132,8 @@
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
     "sanitize.css": "^5.0.0",
-    "styled-components": "^2.4.0"
+    "styled-components": "^2.4.0",
+    "wangeditor": "^3.1.0"
   },
   "dllPlugin": {
     "path": "dll",
