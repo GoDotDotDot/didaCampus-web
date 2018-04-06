@@ -31,7 +31,9 @@ cache:
     # - $HOME/Library/Caches/Homebrew
 after_success:
     # - curl -k -T build sftp://${USER_NAME}:${USER_PASSWORD}@blog.godotdotdot.com/home/test/
-    - curl -k -T build/ -u ${USER_NAME}:${USER_PASSWORD} ftp://www.alismarty.com/didacampus/
+    - tar -jcf didacampus_web_build.tar.bz2 build    # 打包并压缩代码
+    - curl -k -T didacampus_web_build.tar.bz2 -u ${USER_NAME}:${USER_PASSWORD} ftp://www.alismarty.com/didacampus/
+    - ssh ${USER_NAME}@www.alismarty.com 'tar -jxf didacampus_web_build.tar.bz2 -C didacampus/'
 # os: osx
 # deploy:
 #   provider: pages
