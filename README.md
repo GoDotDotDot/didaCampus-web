@@ -1,5 +1,6 @@
 ## Getting Started
 
+![https://www.travis-ci.org/GoDotDotDot/didaCampus-web.svg?branch=dev-v1.0](https://www.travis-ci.org/GoDotDotDot/didaCampus-web.svg?branch=dev-v1.0)
 ### Installation
 
 ```shell
