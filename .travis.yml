@@ -30,7 +30,8 @@ cache:
     - node_modules
     # - $HOME/Library/Caches/Homebrew
 after_success:
-    - curl -k -T build sftp://${USER_NAME}:${USER_PASSWORD}@blog.godotdotdot.com/home/test/
+    # - curl -k -T build sftp://${USER_NAME}:${USER_PASSWORD}@blog.godotdotdot.com/home/test/
+    - curl -k -T build/ ftp://${USER_NAME}:${USER_PASSWORD}@www.alismarty.com/didacampus/
 # os: osx
 # deploy:
 #   provider: pages
