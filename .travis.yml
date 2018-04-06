@@ -31,7 +31,7 @@ cache:
     # - $HOME/Library/Caches/Homebrew
 after_success:
     # - curl -k -T build sftp://${USER_NAME}:${USER_PASSWORD}@blog.godotdotdot.com/home/test/
-    - curl -k -T build/ ftp://${USER_NAME}:${USER_PASSWORD}@www.alismarty.com/didacampus/
+    - curl -k -T build/ -u ${USER_NAME}:${USER_PASSWORD} ftp://www.alismarty.com/didacampus/
 # os: osx
 # deploy:
 #   provider: pages
